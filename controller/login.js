@@ -17,8 +17,8 @@ export const loginData = async (req,res) =>{
     // }
     const {email, password} = req.body;
     try{
-        let collection = await db.collection("MrQuick-employee");
-        const existingEmployee = await collection.findOne({email});
+       
+        const existingEmployee = await Login.findOne({email});
         if(!existingEmployee)return res.status(404).json({ message: "User doesn't exist" });
         const isPasswordCorrect = await bcrypt.compare(password, existingEmployee.password)|| existingEmployee.password == password;
 
@@ -32,8 +32,8 @@ export const loginData = async (req,res) =>{
 
 export const getEmployeee = async (req,res) =>{
     try{
-        let collection = await db.collection("MrQuick-employee");
-        let result = await collection.find({}).toArray();
+       // let collection = await db.collection("MrQuick-employee");
+        let result = await Login.find({}).toArray();
         res.send(result).status(200);
     }
     catch(error){

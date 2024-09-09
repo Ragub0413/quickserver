@@ -9,6 +9,24 @@ const secret='test';
 
 const router = express.Router();
 
+export const loginEmployee = async (req,res)=>{
+    const {email, password}=req.body;
+    try{
+       
+        const existingEmployee = await Employee.findOne({email});
+        if(!existingEmployee)return res.status(404).json({ message: "User doesn't exist" });
+        
+        const isPasswordCorrect = await bcrypt.compare(password, existingEmployee.password); //|| existingEmployee.password == password
+        // const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, { expiresIn: "1h" });
+        if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
+        ///const token = jwt.sign({ email: existingEmployee.email, id: existingEmployee._id }, secret, { expiresIn: "5h" });
+        res.status(200).json({ result: existingEmployee});
+
+    }catch(err){
+        res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
 export const createNewEmployee = async(req,res)=>{
     const {firstName,lastName,email,password,role} = req.body;
 
