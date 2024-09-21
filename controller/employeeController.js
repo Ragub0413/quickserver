@@ -157,7 +157,7 @@ export const savenewPassword = async(req,res)=>{
     if(!oldUser) return res.json({status:"User not found!"});
     const sec = secret+oldUser.password;
     try{
-        const verify = jwt.verify(token,sec);
+        const verify = jwt.verify(token,sec);    
        // res.send("Verified")
         const encryptedPassword = await bcryptjs.hash(password,12);
         // await Employee.findByIdAndUpdate(id,password);
