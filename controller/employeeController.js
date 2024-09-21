@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import db from '../connection/database.js';
 import Employee from '../model/employee.js';
 import OTPmodels from '../model/otpmodel.js';
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mailSender from '../email/emailotp.js';
 import { sendOTP } from './otpController.js';
@@ -33,7 +33,7 @@ export const loginEmployee = async(req,res)=>{
         const existingEmployee = await Employee.findOne({email});
         if(!existingEmployee)return res.status(404).json({ message: "User doesn't exist" });
 
-        const isPasswordCorrect = await bcrypt.compare(password, existingEmployee.password) || existingEmployee.password == password;
+        const isPasswordCorrect = await bcryptjs.compare(password, existingEmployee.password) || existingEmployee.password == password;
         // const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, { expiresIn: "1h" });
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
         
@@ -59,7 +59,7 @@ export const createNewEmployee = async(req,res)=>{
          const imageName = req.file.filename;
     //    const oldEmployee = await Employee.findOne({_id});
     //    if(oldEmployee) return res.status(400).json({message:'Staff already exist'});
-        const hashedPassword = await bcrypt.hash(password,12);
+        const hashedPassword = await bcryptjs.hash(password,12);
         const result = await Employee.create({firstName,lastName,email,role,password: hashedPassword,contactNumber,profilePicture:imageName });
         res.status(201).json({result});
     }
@@ -159,7 +159,7 @@ export const savenewPassword = async(req,res)=>{
     try{
         const verify = jwt.verify(token,sec);
        // res.send("Verified")
-        const encryptedPassword = await bcrypt.hash(password,12);
+        const encryptedPassword = await bcryptjs.hash(password,12);
         // await Employee.findByIdAndUpdate(id,password);
 
         await Employee.updateOne(
