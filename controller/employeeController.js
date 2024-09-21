@@ -5,7 +5,7 @@ import db from '../connection/database.js';
 import Employee from '../model/employee.js';
 import OTPmodels from '../model/otpmodel.js';
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import mailSender from '../email/emailotp.js';
 import { sendOTP } from './otpController.js';
 import multer from 'multer';
